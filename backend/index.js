@@ -6,7 +6,7 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import {fileURLToPath} from "url";
 import {dirname} from "path";
-import {create, getAll} from "./controllers/PodcastController.js";
+import {create, getAll, getOne} from "./controllers/PodcastController.js";
 import connectDB from "./connectDB.js";
 
 dotenv.config();
@@ -18,6 +18,8 @@ const __dirname = dirname(__filename);
 
 
 app.get('/', getAll)
+app.get('/podcasts', getAll)
+app.get('/podcasts/:id', getOne)
 
 app.listen(PORT, async () => {
     console.log(`Listening on port ${PORT}`);

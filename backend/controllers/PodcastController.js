@@ -29,3 +29,23 @@ export const getAll = async (req, res) => {
         })
     }
 }
+
+export const getOne = async (req, res) => {
+    try {
+        const podcastId = req.params.id;
+        const doc = await PodcastModel.findById(podcastId)
+
+        if (!doc) {
+            return res.status(404).json({
+                message: 'Подкаст не найден'
+            });
+        }
+
+        res.status(200).json(doc);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Не удалось получить подкаст'
+        });
+    }
+};
