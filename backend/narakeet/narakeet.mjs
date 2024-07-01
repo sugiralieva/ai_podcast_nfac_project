@@ -56,6 +56,7 @@ async function uploadToS3(stream, key) {
     try {
         await s3.upload(params).promise();
         console.log('File uploaded successfully to S3:', key);
+        return `https://${bucketName}.s3.amazonaws.com/${key}`;
     } catch (error) {
         console.error('Error uploading file to S3:', error.message);
         throw error;
@@ -66,45 +67,50 @@ async function downloadFileToS3(url, key) {
     try {
         const response = await axios.get(url, { responseType: 'stream' });
 
-        await uploadToS3(response.data, key);
+        return await uploadToS3(response.data, key);
     } catch (error) {
         console.error('Error downloading file:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
 
-export async function generateAudio() {
+export async function generateAudio(title, text) {
     try {
-        const TEXT_BODY = 'Сәлем! Бұл әйелдерге арналған подкаст';
+        const TEXT_BODY = text;
         const statusUrl = await requestAudioBuild(TEXT_BODY);
         console.log('Audio build requested. Polling status URL:', statusUrl);
 
         let buildStatus;
-        let pollingInterval = setInterval(async () => {
-            try {
-                buildStatus = await pollStatus(statusUrl);
-                console.log('Polling status:', buildStatus);
+        return new Promise((resolve, reject) => {
+            let pollingInterval = setInterval(async () => {
+                try {
+                    buildStatus = await pollStatus(statusUrl);
+                    console.log('Polling status:', buildStatus);
 
-                if (buildStatus.finished) {
-                    clearInterval(pollingInterval);
+                    if (buildStatus.finished) {
+                        clearInterval(pollingInterval);
 
-                    if (buildStatus.succeeded) {
-                        const audioUrl = buildStatus.result;
-                        const key = `output-${Date.now()}.mp3`;
-                        console.log('Downloading audio file from:', audioUrl);
-                        await downloadFileToS3(audioUrl, key);
-                        console.log('Audio file downloaded and uploaded to S3 as:', key);
-                        console.log(`https://${bucketName}.s3.amazonaws.com/${key}`)
-                    } else {
-                        console.error('Audio build failed:', buildStatus.message);
+                        if (buildStatus.succeeded) {
+                            const audioUrl = buildStatus.result;
+                            const key = `${title}-${Date.now()}.mp3`;
+                            console.log('Downloading audio file from:', audioUrl);
+                            const s3Url = await downloadFileToS3(audioUrl, key);
+                            console.log('Audio file downloaded and uploaded to S3 as:', key);
+                            resolve(s3Url);
+                        } else {
+                            console.error('Audio build failed:', buildStatus.message);
+                            reject(new Error('Audio build failed'));
+                        }
                     }
+                } catch (error) {
+                    clearInterval(pollingInterval);
+                    console.error('Error during polling:', error.message);
+                    reject(error);
                 }
-            } catch (error) {
-                clearInterval(pollingInterval);
-                console.error('Error during polling:', error.message);
-            }
-        }, 5000); // Poll every 5 seconds
+            }, 5000); // Poll every 5 seconds
+        });
     } catch (error) {
         console.error('An error occurred:', error.message);
+        throw error;
     }
 }

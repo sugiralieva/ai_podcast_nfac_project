@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const PodcastSchema = new mongoose.Schema({
+    episode: {
+        type:String,
+        required: true
+    },
     title: {
         type:String,
         required: true
