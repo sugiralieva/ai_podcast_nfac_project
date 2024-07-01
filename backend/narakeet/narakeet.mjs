@@ -1,8 +1,17 @@
+import AWS from 'aws-sdk';
 import axios from "axios";
 import { fileURLToPath } from 'url';
-import { dirname, resolve as resolvePath } from 'path';
-import fs from "fs";
+import { dirname } from 'path';
 import { generateText } from "../gpt/gpt-controller.js";
+
+// AWS configuration
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+});
+
+const bucketName = process.env.AWS_S3_BUCKET_NAME;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,17 +46,27 @@ async function pollStatus(url) {
     }
 }
 
-async function downloadFile(url, filePath) {
+async function uploadToS3(stream, key) {
+    const params = {
+        Bucket: bucketName,
+        Key: key,
+        Body: stream
+    };
+
+    try {
+        await s3.upload(params).promise();
+        console.log('File uploaded successfully to S3:', key);
+    } catch (error) {
+        console.error('Error uploading file to S3:', error.message);
+        throw error;
+    }
+}
+
+async function downloadFileToS3(url, key) {
     try {
         const response = await axios.get(url, { responseType: 'stream' });
-        const writer = fs.createWriteStream(filePath);
 
-        response.data.pipe(writer);
-
-        return new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-        });
+        await uploadToS3(response.data, key);
     } catch (error) {
         console.error('Error downloading file:', error.response ? error.response.data : error.message);
         throw error;
@@ -56,7 +75,7 @@ async function downloadFile(url, filePath) {
 
 export async function generateAudio() {
     try {
-        const TEXT_BODY = await generateText();
+        const TEXT_BODY = 'Сәлем! Бұл әйелдерге арналған подкаст';
         const statusUrl = await requestAudioBuild(TEXT_BODY);
         console.log('Audio build requested. Polling status URL:', statusUrl);
 
@@ -71,10 +90,11 @@ export async function generateAudio() {
 
                     if (buildStatus.succeeded) {
                         const audioUrl = buildStatus.result;
-                        const filePath = resolvePath(__dirname,'output.mp3');
+                        const key = `output-${Date.now()}.mp3`;
                         console.log('Downloading audio file from:', audioUrl);
-                        await downloadFile(audioUrl, filePath);
-                        console.log('Audio file downloaded and saved as:', filePath);
+                        await downloadFileToS3(audioUrl, key);
+                        console.log('Audio file downloaded and uploaded to S3 as:', key);
+                        console.log(`https://${bucketName}.s3.amazonaws.com/${key}`)
                     } else {
                         console.error('Audio build failed:', buildStatus.message);
                     }
