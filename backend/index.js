@@ -8,6 +8,7 @@ import {fileURLToPath} from "url";
 import {dirname} from "path";
 import {create, getAll, getOne} from "./controllers/PodcastController.js";
 import connectDB from "./connectDB.js";
+import cors from "cors";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -16,8 +17,8 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.use(cors());
 
-app.get('/', getAll)
 app.get('/podcasts', getAll)
 app.get('/podcasts/:id', getOne)
 
