@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
+
 export default function Podcasts() {
     const [podcasts, setPodcasts] = useState([]);
 
     const getPodcasts = async () => {
         try {
-            const response = await axios.get("http://localhost:5001/podcasts/");
+            const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/podcasts");
             setPodcasts(response.data);
             console.log(podcasts)
         } catch (error) {

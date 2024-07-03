@@ -9,7 +9,7 @@ export default function Home() {
 
   const getPodcasts = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/podcasts/");
+      const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/podcasts");
       setPodcasts(response.data);
       console.log(podcasts)
     } catch (error) {
@@ -28,7 +28,7 @@ export default function Home() {
           <section className="container mx-auto py-12 px-4 md:px-6">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h1 className="text-4xl font-bold mb-4">SyrlasAI Podcast</h1>
+                <h1 className="text-4xl font-bold mb-4">Syrlasu AI Podcast</h1>
                 <p className="text-muted-foreground mb-6">
                   Сырласудың шынайы мекені
                 </p>

@@ -107,7 +107,7 @@ export async function generateAudio(title, text) {
                     console.error('Error during polling:', error.message);
                     reject(error);
                 }
-            }, 5000); // Poll every 5 seconds
+            }, 2000); // Poll every 2 seconds
         });
     } catch (error) {
         console.error('An error occurred:', error.message);

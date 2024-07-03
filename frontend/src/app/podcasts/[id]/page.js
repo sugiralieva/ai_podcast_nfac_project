@@ -2,6 +2,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+
 export default function PodcastId({ params }) {
     const podcastId = params.id;
 
@@ -9,7 +10,7 @@ export default function PodcastId({ params }) {
 
     const getPodcasts = async () => {
         try {
-            const response = await axios.get(`http://localhost:5001/podcasts/${podcastId}`);
+            const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + `/podcasts/${podcastId}`);
             setPodcast(response.data);
             console.log(podcast)
         } catch (error) {
