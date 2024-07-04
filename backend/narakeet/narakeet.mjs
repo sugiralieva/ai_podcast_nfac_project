@@ -1,8 +1,15 @@
 import AWS from 'aws-sdk';
 import axios from "axios";
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import { generateText } from "../gpt/gpt-controller.js";
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from 'ffmpeg-static';
+import ffprobePath from 'ffprobe-static';
+import fs from 'fs';
+
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath.path);
 
 // AWS configuration
 const s3 = new AWS.S3({
@@ -19,6 +26,9 @@ const __dirname = dirname(__filename);
 const API_KEY = process.env.NARAKEET_API_KEY;
 const API_URL = 'https://api.narakeet.com/text-to-speech/mp3';
 const VOICE = 'gulshat';
+
+const introPath = join(__dirname, 'intro.mp3');
+const outroPath = join(__dirname, 'outro.mp3');
 
 async function requestAudioBuild(TEXT_BODY) {
     try {
@@ -74,6 +84,24 @@ async function downloadFileToS3(url, key) {
     }
 }
 
+function combineAudioFiles(introPath, audioPath, outroPath, outputPath) {
+    return new Promise((resolve, reject) => {
+        ffmpeg()
+            .input(introPath)
+            .input(audioPath)
+            .input(outroPath)
+            .on('error', (err) => {
+                console.error('Error combining audio files:', err.message);
+                reject(err);
+            })
+            .on('end', () => {
+                console.log('Audio files combined successfully.');
+                resolve(outputPath);
+            })
+            .mergeToFile(outputPath, __dirname);
+    });
+}
+
 export async function generateAudio(title, text) {
     try {
         const TEXT_BODY = text;
@@ -92,10 +120,25 @@ export async function generateAudio(title, text) {
 
                         if (buildStatus.succeeded) {
                             const audioUrl = buildStatus.result;
-                            const key = `${title}-${Date.now()}.mp3`;
+                            const audioPath = join(__dirname, 'audio.mp3');
+                            const combinedPath = join(__dirname, `${title}-${Date.now()}.mp3`);
+
+                            // Download the generated audio file
                             console.log('Downloading audio file from:', audioUrl);
-                            const s3Url = await downloadFileToS3(audioUrl, key);
-                            console.log('Audio file downloaded and uploaded to S3 as:', key);
+                            const response = await axios.get(audioUrl, { responseType: 'stream' });
+                            const writer = fs.createWriteStream(audioPath);
+                            response.data.pipe(writer);
+                            await new Promise((resolve, reject) => {
+                                writer.on('finish', resolve);
+                                writer.on('error', reject);
+                            });
+
+                            // Combine intro, main audio, and outro
+                            await combineAudioFiles(introPath, audioPath, outroPath, combinedPath);
+
+                            // Upload the combined audio file to S3
+                            const s3Url = await uploadToS3(fs.createReadStream(combinedPath), `${title}-${Date.now()}.mp3`);
+                            console.log('Audio file downloaded, combined, and uploaded to S3 as:', combinedPath);
                             resolve(s3Url);
                         } else {
                             console.error('Audio build failed:', buildStatus.message);
