@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
-import {BriefcaseIcon, HeartIcon, ClockIcon, HomeIcon, UsersIcon, ParentsIcon, LightbulbIcon} from "@/components/icons/Icons";
+import {BriefcaseIcon, HeartIcon, ClockIcon, HomeIcon, UsersIcon, ParentsIcon, LightbulbIcon, PubertyIcon, FemaleIcon} from "@/components/icons/Icons";
 
 export default function Home() {
 
@@ -115,15 +115,27 @@ export default function Home() {
                     className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
                     prefetch={false}
                 >
+
+                  <FemaleIcon className="w-8 h-8" />
+                  <h3 className="text-lg font-bold">Жыныстық жетілу</h3>
+                  <p className="text-muted-foreground text-sm">Жыныстық жетілу кезінде өзіңді қалай ұстау керек</p>
+                </Link>
+                <Link
+                    href="podcasts"
+                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    prefetch={false}
+                >
+
                   <UsersIcon className="w-8 h-8" />
                   <h3 className="text-lg font-bold">Қарым-қатынас</h3>
-                  <p className="text-muted-foreground text-sm">Navigating personal and professional connections.</p>
+                  <p className="text-muted-foreground text-sm">Сау қарым-қатынас негіздері</p>
                 </Link>
                 <Link
                     href="/podcasts"
                     className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
                     prefetch={false}
                 >
+
                   <ParentsIcon className="w-8 h-8" />
                   <h3 className="text-lg font-bold">Ата-анамен қарым-қатынас</h3>
                   <p className="text-muted-foreground text-sm">Ата-анамен қарым-қатынасты реттеу бойынша кеңестер</p>
@@ -133,15 +145,7 @@ export default function Home() {
                     className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
                     prefetch={false}
                 >
-                  <HomeIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Өмір салты</h3>
-                  <p className="text-muted-foreground text-sm">Күнделікті өмірге арналған практикалық кеңестер</p>
-                </Link>
-                <Link
-                    href="podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
+
                   <LightbulbIcon className="w-8 h-8" />
                   <h3 className="text-lg font-bold">Шабыттану</h3>
                   <p className="text-muted-foreground text-sm">Сізді шабыттандыратын оқиғалар</p>
