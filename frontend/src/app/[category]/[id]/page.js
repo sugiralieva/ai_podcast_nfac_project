@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
-import {BriefcaseIcon, HeartIcon, HomeIcon, LightbulbIcon, ParentsIcon, UsersIcon, PlayIcon, PauseIcon, RewindIcon, VolumeIcon, ForwardIcon} from "@/components/icons/Icons";
+import {BriefcaseIcon, HeartIcon, FemaleIcon, LightbulbIcon, ParentsIcon, UsersIcon, PlayIcon, PauseIcon, RewindIcon, VolumeIcon, ForwardIcon} from "@/components/icons/Icons";
 
 
 function AudioPlayer({ podcast }) {
@@ -88,6 +88,32 @@ export default function PodcastId({ params }) {
     const podcastId = params.id;
     const [podcast, setPodcast] = useState([]);
     const [podcasts, setPodcasts] = useState([]);
+    const [showFull, setShowFull] = useState(false);
+    const categories = ['Мансап', 'Денсаулық', 'Жыныстық жетілу', 'Қарым-қатынас', 'Ата-анамен қарым-қатынас', 'Шабыт'];
+    const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+    useEffect(() => {
+        setSelectedCategory(categories[0]);
+      }, []);
+
+
+    const categoryIcons = {
+        'Мансап': BriefcaseIcon,
+        'Денсаулық': HeartIcon,
+        'Жыныстық жетілу': FemaleIcon,
+        'Қарым-қатынас': UsersIcon,
+        'Ата-анамен қарым-қатынас': ParentsIcon,
+        'Шабыт': LightbulbIcon
+      };
+
+    const filteredPodcasts = selectedCategory
+    ? podcasts.filter(podcast => podcast.category.toLowerCase() === selectedCategory.toLowerCase())
+    : podcasts;
+
+    const shortDescription = podcast?.description 
+    ? podcast.description.slice(0, 200) + (podcast.description.length > 50 ? '...' : '') 
+    : '';
+
 
     const getPodcast = async () => {
         try {
@@ -133,38 +159,41 @@ export default function PodcastId({ params }) {
                             <div className="space-y-2">
                                 <h3 className="text-lg font-bold">Шығарылым сипаттамасы</h3>
                                 <p className="text-muted-foreground">
-                                    Бұл шығарылымда қозғалатын тақырыптардың қысқаша анықтамасы болады
+                                    {showFull ? podcast.description : shortDescription}
                                 </p>
                                 <div className="flex items-center gap-2">
-                                    <Link
-                                        href="#"
-                                        className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                                        prefetch={false}
+                                    <Button
+                                    onClick={() => setShowFull(!showFull)}
+                                    className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                                     >
-                                        Толық көру
-                                    </Link>
+                                    {showFull ? 'Жасыру' : 'Толық көру'}
+                                    </Button>
                                 </div>
-                            </div>
+                                </div>
                         </div>
+                        
                         <div className="space-y-4">
                             <Card>
                                 <CardContent className="p-4">
-                                    <h3 className="text-lg font-bold">Барлық шығарылымдар</h3>
-                                    <div className="grid gap-4 mt-4">
-                                        {podcasts.map((podcast) => (
+                                <h3 className="text-lg font-bold">Барлық шығарылымдар</h3>
+                                <div className="mt-4 h-64 overflow-y-auto pr-2">
+                                    <div className="grid gap-4">
+                                        {podcasts.map((podcast) => ( 
                                         <Link
-                                            href={`/podcasts/${podcast._id}`}
+                                            key={podcast._id}
+                                            href={`/${podcast.category}/${podcast._id}`}
                                             className="flex items-center gap-4 hover:underline underline-offset-4"
                                             prefetch={false}
                                         >
                                             <div>
-                                                <h4 className="text-base font-bold">{podcast.title}</h4>
-                                                <p className="text-muted-foreground text-sm">
-                                                    {podcast.episode}
-                                                </p>
+                                            <h4 className="text-base font-bold">{podcast.title}</h4>
+                                            <p className="text-muted-foreground text-sm">
+                                                {podcast.episode}
+                                            </p>
                                             </div>
                                         </Link>
-                                            ))}
+                                        ))}
+                                    </div>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -176,69 +205,36 @@ export default function PodcastId({ params }) {
             <main className="flex-1">
                 <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
                     <div className="container px-4 md:px-6 grid gap-6 lg:grid-cols-[200px_1fr]">
-                        <div className="space-y-4">
-                            <h2 className="text-3xl font-bold tracking-tighter">Категориялар</h2>
-                            <nav className="space-y-2">
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <BriefcaseIcon className="w-4 h-4" />
-                                    Мансап
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <HeartIcon className="w-4 h-4" />
-                                    Денсаулық
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <UsersIcon className="w-4 h-4" />
-                                    Қарым-қатынас
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <ParentsIcon className="w-4 h-4" />
-                                    Ата-анамен қарым-қатнас
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <HomeIcon className="w-4 h-4" />
-                                    Өмір салты
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-sm font-medium hover:underline underline-offset-4"
-                                    prefetch={false}
-                                >
-                                    <LightbulbIcon className="w-4 h-4" />
-                                    Шабыттану
-                                </Link>
-                            </nav>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {podcasts.map((podcast) => (
-                            <Card>
-                                <CardContent className="p-4">
-                                    <h3 className="text-lg font-bold">{podcast.title}</h3>
-                                    <p className="text-muted-foreground">{podcast.episode}</p>
-                                </CardContent>
-                            </Card>
-                                ))}
-                        </div>
+                    <div className="space-y-4">
+                        <h2 className="text-3xl font-bold tracking-tighter">Категориялар</h2>
+                        <nav className="space-y-2">
+                        {categories.map(category => {
+                            const Icon = categoryIcons[category];
+                            return (
+                            <button
+                                key={category}
+                                onClick={() => setSelectedCategory(category)}
+                                className={`flex items-center gap-2 text-sm text-left font-medium hover:underline underline-offset-4 ${
+                                selectedCategory === category ? 'text-primary' : ''
+                                }`}
+                            >
+                                <Icon className="w-4 h-4" />
+                                {category}
+                            </button>
+                            );
+                        })}
+                        </nav>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredPodcasts.map((podcast) => (
+                        <Card key={podcast._id}>
+                            <CardContent className="p-4">
+                            <h3 className="text-lg font-bold">{podcast.title}</h3>
+                            <p className="text-muted-foreground">{podcast.episode}</p>
+                            </CardContent>
+                        </Card>
+                        ))}
+                    </div>
                     </div>
                 </section>
             </main>

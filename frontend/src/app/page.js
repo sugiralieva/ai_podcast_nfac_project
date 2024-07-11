@@ -9,6 +9,41 @@ import {BriefcaseIcon, HeartIcon, ClockIcon, HomeIcon, UsersIcon, ParentsIcon, L
 export default function Home() {
 
   const [podcasts, setPodcasts] = useState([]);
+  const categories = [
+    {
+      name: 'Мансап',
+      desc: 'Мансаптық өсу үшін кеңестер'
+    },
+    {
+      name: 'Денсаулық',
+      desc: 'Салауатты ақыл мен денеге арналған кеңестер'
+    },
+    {
+      name: 'Жыныстық жетілу',
+      desc: 'Жыныстық жетілу кезінде өзіңді қалай ұстау керек'
+    },
+    {
+      name: 'Қарым-қатынас',
+      desc: 'Сау қарым-қатынас негіздері'
+    },
+    {
+      name: 'Ата-анамен қарым-қатынас',
+      desc: 'Ата-анамен қарым-қатынасты реттеу бойынша кеңестер'
+    },
+    {
+      name: 'Шабыт',
+      desc: 'Сізді шабыттандыратын оқиғалар'
+    }
+  ]
+
+  const categoryIcons = {
+    'Мансап': BriefcaseIcon,
+    'Денсаулық': HeartIcon,
+    'Жыныстық жетілу': FemaleIcon,
+    'Қарым-қатынас': UsersIcon,
+    'Ата-анамен қарым-қатынас': ParentsIcon,
+    'Шабыт': LightbulbIcon
+  };
 
   const getPodcasts = async () => {
     try {
@@ -45,7 +80,7 @@ export default function Home() {
                     Қыздарға арналған кеңестер, құпиялар, қанаттандыратын оқиғалар
                   </p>
                   <div className="flex gap-2">
-                    <Link href="/podcasts">
+                    <Link href="/all">
                         <Button>Тыңдау</Button>
                     </Link>
                     <Link href="https://www.instagram.com/syrlasu.ai/?igsh=aW5vc2wxcHl5NHlx&utm_source=qr">
@@ -62,24 +97,23 @@ export default function Home() {
                 <h2 className="text-2xl md:text-3xl font-bold">Соңғы шығарылымдар</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                  {podcasts.map((podcast) => (
-                  <Card key={podcast.episode} className="bg-[#F9F9F9] rounded-xl shadow-md">
-                    <Link href={`/podcasts/${podcast._id}`}>
-                    <CardContent className="p-4">
-                      <div className="space-y-2 mt-4">
-                        <h3 className="text-lg font-bold">{podcast.title}</h3>
-                        <p className="text-muted-foreground text-sm">
-                          {podcast.episode}
-                        </p>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <ClockIcon className="w-4 h-4" />
-                          <span>{podcast.createdAt}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                    </Link>
-                  </Card>
-
+                {podcasts.slice(0, 3).map((podcast) => (
+                    <Card key={podcast.episode} className="bg-[#F9F9F9] rounded-xl shadow-md">
+                      <Link href={`/${podcast.category}/${podcast._id}`}>
+                        <CardContent className="p-4">
+                          <div className="space-y-2 mt-4">
+                            <h3 className="text-lg font-bold">{podcast.title}</h3>
+                            <p className="text-muted-foreground text-sm">
+                              {podcast.episode}
+                            </p>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <ClockIcon className="w-4 h-4" />
+                              <span>{podcast.createdAt}</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Link>
+                    </Card>
                   ))}
 
                 </div>
@@ -92,64 +126,24 @@ export default function Home() {
             <div className="space-y-6">
               <h2 className="text-2xl md:text-3xl font-bold">Категориялар</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Link
-                    href="/podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
-                  <BriefcaseIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Мансап</h3>
-                  <p className="text-muted-foreground text-sm">Мансаптық өсу үшін кеңестер</p>
-                </Link>
-                <Link
-                    href="/podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
-                  <HeartIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Денсаулық</h3>
-                  <p className="text-muted-foreground text-sm">Салауатты ақыл мен денеге арналған кеңестер</p>
-                </Link>
-                <Link
-                    href="/podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
+              {categories.map((category) => {
+                const IconComponent = categoryIcons[category.name] || LightbulbIcon; // Используем LightbulbIcon как иконку по умолчанию
 
-                  <FemaleIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Жыныстық жетілу</h3>
-                  <p className="text-muted-foreground text-sm">Жыныстық жетілу кезінде өзіңді қалай ұстау керек</p>
-                </Link>
-                <Link
-                    href="podcasts"
+                return (
+                  <Link
+                    key={category.name}
+                    href={`/${category.name}`}
                     className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
                     prefetch={false}
-                >
-
-                  <UsersIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Қарым-қатынас</h3>
-                  <p className="text-muted-foreground text-sm">Сау қарым-қатынас негіздері</p>
-                </Link>
-                <Link
-                    href="/podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
-
-                  <ParentsIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Ата-анамен қарым-қатынас</h3>
-                  <p className="text-muted-foreground text-sm">Ата-анамен қарым-қатынасты реттеу бойынша кеңестер</p>
-                </Link>
-                <Link
-                    href="/podcasts"
-                    className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    prefetch={false}
-                >
-
-                  <LightbulbIcon className="w-8 h-8" />
-                  <h3 className="text-lg font-bold">Шабыттану</h3>
-                  <p className="text-muted-foreground text-sm">Сізді шабыттандыратын оқиғалар</p>
-                </Link>
+                  >
+                    <IconComponent className="w-8 h-8" />
+                    <h3 className="text-lg font-bold">{category.name}</h3>
+                    <p className="text-muted-foreground text-sm">{category.desc}</p>
+                  </Link>
+                );
+              })}
+                
+                
               </div>
             </div>
           </div>
