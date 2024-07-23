@@ -83,7 +83,7 @@ const ChatPage = () => {
         </Link>
       </div>
     </header>
-    <main className="flex-grow bg-white p-4 overflow-y-auto rounded-lg my-4">
+    <main className="flex-grow bg-white bg-opacity-50 p-4 overflow-y-auto rounded-lg my-4 max-h-[calc(100vh-200px)]">
       {messages.map((message, index) => (
         <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
           <span className={`inline-block p-2 sm:p-3 rounded-lg ${message.role === 'user' ? 'bg-primary text-white' : 'bg-gray-200'} text-sm sm:text-base`}>
@@ -91,9 +91,9 @@ const ChatPage = () => {
           </span>
         </div>
       ))}
-      {isLoading && <div className="text-center text-sm sm:text-base">Жауап күтілуде...</div>}
+      {isLoading && <div className="text-center text-sm sm:text-base">...</div>}
     </main>
-    <footer className="bg-white border-t p-2 sm:p-4 rounded-lg mb-4">
+    <footer className="bg-white bg-opacity-50 border-t p-2 sm:p-4 rounded-lg mb-4">
       <div className="container mx-auto flex">
         <input
           type="text"
@@ -115,6 +115,7 @@ const ChatPage = () => {
     </footer>
   </div>
 </div>
+
   );
 };
 

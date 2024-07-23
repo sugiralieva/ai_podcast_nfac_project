@@ -1,14 +1,21 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { ClockIcon } from "@/components/icons/Icons";
+import { Button } from "@/components/ui/button"
 
 export default function AllPodcasts() {
     const [podcasts, setPodcasts] = useState([]);
-
-    const categories = ['Мансап', 'Денсаулық', 'Жыныстық жетілу', 'Қарым-қатынас', 'Ата-анамен қарым-қатынас', 'Шабыт'];
+    const [currentAudio, setCurrentAudio] = useState(null);
+    const audioRefs = useRef([]);
+  
+    const handlePlay = (index) => {
+      if (currentAudio !== null && currentAudio !== index) {
+        audioRefs.current[currentAudio].pause();
+      }
+      setCurrentAudio(index);
+    };
 
     const getPodcasts = async () => {
         try {
@@ -25,45 +32,52 @@ export default function AllPodcasts() {
 
     return (
         <div className="flex flex-col min-h-[100dvh]">
-            <main className="flex-1">
-                <section className="bg-[#F9F9F9] py-12 md:py-20">
-                    <div className="container mx-auto px-4 md:px-6">
-                        {categories.map(category => {
-                            const categoryPodcasts = podcasts.filter(podcast => 
-                                podcast.category.toLowerCase() === category.toLowerCase()
-                            );
+        <div className="bg-[url('/project_images/background.jpg')] bg-cover bg-center bg-no-repeat">
+          <header className="flex justify-center">
+          <div className="w-4/5 px-4 lg:px-6 h-14 flex items-center py-10">
+            <Link href="/" className="flex items-center justify-center" prefetch={false}>
+              <span className="text-2xl font-bold">syrlasuAI</span>
+              <span className="sr-only">SyrlasuAI: сырласудың шынайы мекені</span>
+            </Link>
+            <nav className="ml-auto flex gap-4 sm:gap-6">
+              <Link href="/chat" className="text-xl font-bold hover:underline underline-offset-4" prefetch={false}>
+                <Button className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                  Сұрау
+                </Button>
+              </Link>
+            </nav>
+            </div>
+          </header>
 
-                            return categoryPodcasts.length > 0 ? (
-                                <div key={category} className="space-y-6 mb-12">
-                                    <Link href={`/${category}`}>
-                                    <h2 className="text-2xl md:text-3xl hover:underline font-bold">{category} категориясындағы шығарылымдар</h2>
-                                    </Link>
-                                    <ul className="space-y-4">
-                                        {categoryPodcasts.map((podcast) => (
-                                            <li key={podcast.episode}>
-                                                <Card className="bg-white rounded-xl shadow-md">
-                                                    <Link href={`/${category}/${podcast._id}`}>
-                                                        <CardContent className="p-4">
-                                                            <div className="space-y-2 mt-4">
-                                                                <h3 className="text-lg font-bold">{podcast.title}</h3>
-                                                                <p className="text-muted-foreground text-sm">{podcast.episode}</p>
-                                                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                                                    <ClockIcon className="w-4 h-4"/>
-                                                                    <span>{podcast.createdAt}</span>
-                                                                </div>
-                                                            </div>
-                                                        </CardContent>
-                                                    </Link>
-                                                </Card>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : null;
-                        })}
-                    </div>
-                </section>
-            </main>
-        </div>
+            <div className="w-full max-w-6xl mx-auto">
+                <div className="flex flex-col gap-6 mb-6">
+                    {podcasts.map((podcast) => (
+                    <Card key={podcast.episode} className="bg-[#F9F9F9] rounded-xl shadow-md">
+                        <Link href={`/${podcast.category}/${podcast._id}`}>
+                        <CardContent className="p-4">
+                            <div className="space-y-2">
+                            <h3 className="text-lg font-bold">{podcast.title}</h3>
+                            {podcast.url && (
+                                <audio
+                                ref={(el) => (audioRefs.current[podcast.episode] = el)}
+                                src={podcast.url}
+                                controls
+                                onPlay={() => handlePlay(podcast.episode)}
+                                className="w-full"
+                                />
+                            )}
+                            </div>
+                        </CardContent>
+                        </Link>
+                    </Card>
+                    ))}
+                </div>
+            </div>
+            <footer className="flex flex-col gap-2 py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+                <p className="text-xs text-muted-foreground">&copy; 2024 SyrlasuAI Podcast. All rights reserved.</p>
+            </footer>
+            </div>
+            </div>
+
     );
 }

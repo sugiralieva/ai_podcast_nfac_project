@@ -55,7 +55,7 @@ export default function Component() {
     <div className="bg-[url('/project_images/background.jpg')] bg-cover bg-center bg-no-repeat">
       <header className="flex justify-center">
       <div className="w-4/5 px-4 lg:px-6 h-14 flex items-center py-10">
-        <Link href="#" className="flex items-center justify-center" prefetch={false}>
+        <Link href="/" className="flex items-center justify-center" prefetch={false}>
           <span className="text-2xl font-bold">syrlasuAI</span>
           <span className="sr-only">SyrlasuAI: сырласудың шынайы мекені</span>
         </Link>
