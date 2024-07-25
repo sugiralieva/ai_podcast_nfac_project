@@ -161,7 +161,6 @@ export default function Component() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                   {podcasts.slice(0, 3).map((podcast) => (
                     <Card key={podcast.episode} className="bg-[#F9F9F9] rounded-xl shadow-md">
-                      <Link href={`/${podcast.category}/${podcast._id}`}>
                         <CardContent className="p-4">
                           <div className="space-y-2">
                             <h3 className="text-lg font-bold">{podcast.title}</h3>
@@ -176,7 +175,6 @@ export default function Component() {
                             )}
                           </div>
                         </CardContent>
-                      </Link>
                     </Card>
                   ))}
                 </div>
