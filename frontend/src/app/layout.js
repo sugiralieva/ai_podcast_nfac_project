@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import {Analytics} from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
       <body className={`${inter.className} h-full`}>
           {children}
+        <Analytics />
       </body>
       </html>
   );
