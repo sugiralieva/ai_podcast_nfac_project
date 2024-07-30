@@ -1,11 +1,10 @@
 import PodcastModel from '../models/Podcast.js';
 
-export const create = async (episode, title, category, url, description) => {
+export const create = async (episode, title, url, description) => {
     try {
         const doc = new PodcastModel({
             episode,
             title,
-            category,
             url,
             description
         });
