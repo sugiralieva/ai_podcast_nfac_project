@@ -52,20 +52,13 @@ export default function Component() {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
-    <div className="bg-[url('/project_images/background.jpg')] bg-cover bg-center bg-no-repeat">
+    <div className="bg-[url('/project_images/background.png')] bg-cover bg-center bg-no-repeat">
       <header className="flex justify-center">
-      <div className="w-4/5 px-4 lg:px-6 h-14 flex items-center py-10">
+      <div className="w-full px-4 lg:px-6 h-14 flex items-center py-10">
         <Link href="/" className="flex items-center justify-center" prefetch={false}>
           <span className="text-2xl font-bold">syrlasuAI</span>
           <span className="sr-only">SyrlasuAI: сырласудың шынайы мекені</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/chat" className="text-xl font-bold hover:underline underline-offset-4" prefetch={false}>
-            <Button className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
-              Сұрау
-            </Button>
-          </Link>
-        </nav>
         </div>
       </header>
       {/* <hr /> */}
@@ -76,7 +69,7 @@ export default function Component() {
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
               SyrlasuAI: сырласудың шынайы мекені
             </h1>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-2xl text-[#e7e5e7]">
               Қарым-қатынас мәселелерін талқылайтын жасанды интеллект негізіндегі подкаст
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
@@ -198,16 +191,16 @@ export default function Component() {
                   Сұрақтарыңыз қалды ма?
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Біздің жасанды интеллект негізіндегі ассистентіміз сіздің қарым-қатынас жайлы кез келген сұрағыңызға жауап береді
+                  Кез келген сұрақтарыңыз бен ұсыныстарыңызды біздің поштамызға жазыңыз
                 </p>
               </div>
               <Card>
                 <Link
-                    href="/chat"
+                    href="#"
                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
-                    Сұрау
+                    Бізге жазу
                   </Link>
                 </Card>
             </div>

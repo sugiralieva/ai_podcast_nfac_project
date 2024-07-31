@@ -31,7 +31,7 @@ export default function PodcastId() {
     }, []);
 
     return (
-        <div className="flex flex-col min-h-screen bg-[url('/project_images/background.jpg')] bg-cover bg-center bg-no-repeat">
+        <div className="flex flex-col min-h-screen bg-[url('/project_images/background.png')] bg-cover bg-center bg-no-repeat">
             <header className="flex justify-center">
                 <div className="w-4/5 px-4 lg:px-6 h-14 flex items-center py-10">
                     <Link href="/" className="flex items-center justify-center" prefetch={false}>
