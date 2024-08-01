@@ -8,9 +8,9 @@ import { FaApple, FaSpotify } from 'react-icons/fa';
 import { GoArrowUpRight } from "react-icons/go";
 
 
-const MusicServiceButton = ({ service, icon: Icon, color }) => (
+const MusicServiceButton = ({ service, icon: Icon, link }) => (
   <div className="flex items-center justify-center p-4">
-    <Link href={`#listen-on-${service.toLowerCase().replace(' ', '-')}`} rel="noopener noreferrer">
+    <Link href={`${link}`} rel="noopener noreferrer" target="_blank">
       <div className="bg-transparent text-white flex items-center justify-center px-4 py-2 rounded-md border border-grey-500 shadow-lg">
         <Icon className="mr-2 text-2xl h-12" />
         <div className="flex flex-col text-left">
@@ -27,6 +27,7 @@ export default function Component() {
   const [podcasts, setPodcasts] = useState([]);
   const [currentAudio, setCurrentAudio] = useState(null);
   const audioRefs = useRef([]);
+
 
   const handlePlay = (index) => {
     if (currentAudio !== null && currentAudio !== index) {
@@ -69,21 +70,22 @@ export default function Component() {
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
               SyrlasuAI: сырласудың шынайы мекені
             </h1>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-2xl text-[#e7e5e7]">
+            <p className="mx-auto max-w-[700px] font-medium md:text-2xl text-[#e7e5e7]">
               Қарым-қатынас мәселелерін талқылайтын жасанды интеллект негізіндегі подкаст
             </p>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
+            <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center">
               <Link
                 href="/all"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-16 text-lg font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
               >
                 Тыңдау
               </Link>
               <Link
-                href="#"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                href="https://www.instagram.com/syrlasu.ai?igsh=aW5vc2wxcHl5NHlx&utm_source=qr"
+                className="inline-flex h-12 items-center justify-center rounded-md border border-input bg-background px-16 text-lg font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
+                target="_blank"
               >
                 Жазылу
               </Link>
@@ -93,8 +95,8 @@ export default function Component() {
         
         <div className="flex-grow flex flex-col justify-end">
           <div className="mt-auto mb-12 md:mb-12 flex flex-wrap justify-center lg:gap-4 sm:gap-2">
-            <MusicServiceButton service="Apple Music" icon={FaApple} color="bg-black" />
-            <MusicServiceButton service="Spotify" icon={FaSpotify} color="bg-green-600" />
+            <MusicServiceButton service="Apple Music" icon={FaApple} color="bg-black" link="https://podcasts.apple.com/kz/podcast/syrlasuai/id1760475762"/>
+            <MusicServiceButton service="Spotify" icon={FaSpotify} color="bg-green-600" link="#" />
           </div>
         </div>
       </section>
@@ -114,7 +116,7 @@ export default function Component() {
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-12">
               <div className="grid gap-1">
                 <ContentAccessibilityIcon className="h-8 w-8 text-primary" />
-                <h3 className="text-xl font-bold">Қол жетімділік және ыңғайлылық</h3>
+                <h3 className="text-xl font-bold">Қолжетімділік және ыңғайлылық</h3>
                 <p className="text-muted-foreground">
                   Подкастты кез келген уақытта және кез келген жерде тыңдаңыз
                 </p>
@@ -130,7 +132,7 @@ export default function Component() {
                 <AnonymityIcon className="h-8 w-8 text-primary" />
                 <h3 className="text-xl font-bold">Анонимдік және құпиялылық</h3>
                 <p className="text-muted-foreground">
-                  Өз қарым-қатынасыңыз жайлы кез келген сұрақты анонимді түрде қойып, жауабын алыңыз
+                  Тіркелусіз және тегін түрде тыңдаңыз
                 </p>
               </div>
             </div>
@@ -145,7 +147,7 @@ export default function Component() {
                 <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl md:text-4xl mb-6">
                   Соңғы шығарылымдар
                 </h2>
-                <p className="max-w-[800px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="max-w-[800px] font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-[#e7e5e7]">
                   Подкастты тыңдау арқылы өзіңіздің қарым-қатынас дағдыларыңызды жетілдіріп, эмоцияларыңызды түсініп, өзара түсіністік пен келісімге жетіңіз.
                 </p>
               </div>
@@ -153,7 +155,7 @@ export default function Component() {
               <div className="w-full max-w-6xl mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                   {podcasts.slice(0, 3).map((podcast) => (
-                    <Card key={podcast.episode} className="bg-[#F9F9F9] rounded-xl shadow-md">
+                    <Card key={podcast.episode} className="bg-[#fff] rounded-xl shadow-md">
                         <CardContent className="p-4">
                           <div className="space-y-2">
                             <h3 className="text-lg font-bold">{podcast.title}</h3>
@@ -190,14 +192,14 @@ export default function Component() {
                 <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl md:text-4xl mb-6">
                   Сұрақтарыңыз қалды ма?
                 </h2>
-                <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="max-w-[700px] text-muted-foreground font-medium md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Кез келген сұрақтарыңыз бен ұсыныстарыңызды біздің поштамызға жазыңыз
                 </p>
               </div>
               <Card>
                 <Link
-                    href="#"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    href="mailto:zhansaya.sugiralieva@gmail.com?subject=Подкаст бойынша сұрақ&body=Сәлеметсіз бе, менің подкаст бойынша сұрағым бар..." 
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-16 text-lg font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     prefetch={false}
                   >
                     Бізге жазу

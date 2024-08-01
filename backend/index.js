@@ -32,7 +32,7 @@ app.listen(PORT, async () => {
     connectDB()
     
     // Читаем JSON файл для генерации аудио
-    const jsonFilePath = path.join(__dirname, 'data.json');
+    /* const jsonFilePath = path.join(__dirname, 'data.json');
     const jsonData = JSON.parse(fs.readFileSync(jsonFilePath, 'utf-8'));
 
     // Итерируемся по каждому элементу и генерируем аудио
@@ -78,6 +78,6 @@ app.listen(PORT, async () => {
             console.error(`Error processing episode ${episode}:`, error);
             continue;
         }
-    }
+    } */
 
 });
