@@ -82,7 +82,7 @@ export default function Component() {
                 Тыңдау
               </Link>
               <Link
-                href="https://www.instagram.com/syrlasu.ai?igsh=aW5vc2wxcHl5NHlx&utm_source=qr"
+                href="https://www.instagram.com/syrlasu.ai?igsh=M3JwcW50YTc2dnYx"
                 className="inline-flex h-12 items-center justify-center rounded-md border border-input bg-background px-16 text-lg font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 prefetch={false}
                 target="_blank"
