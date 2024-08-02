@@ -32,11 +32,11 @@ app.listen(PORT, async () => {
     connectDB()
     
     // Читаем JSON файл для генерации аудио
-    /* const jsonFilePath = path.join(__dirname, 'data.json');
+    const jsonFilePath = path.join(__dirname, 'data.json');
     const jsonData = JSON.parse(fs.readFileSync(jsonFilePath, 'utf-8'));
 
     // Итерируемся по каждому элементу и генерируем аудио
-    for (const item of jsonData) {
+/*     for (const item of jsonData) {
         const { episode, title, prompt, description_prompt } = item;
         try {
             // Проверяем prompt перед вызовом processAudio
@@ -72,7 +72,7 @@ app.listen(PORT, async () => {
     
             // Ожидаем завершения create
             await create(episode, title, url, description);
-            
+          
             console.log(`Episode ${episode} processed and saved successfully`);
         } catch (error) {
             console.error(`Error processing episode ${episode}:`, error);

@@ -95,7 +95,7 @@ export default function Component() {
         
         <div className="flex-grow flex flex-col justify-end">
           <div className="mt-auto mb-12 md:mb-12 flex flex-wrap justify-center lg:gap-4 sm:gap-2">
-            <MusicServiceButton service="Apple Music" icon={FaApple} color="bg-black" link="https://podcasts.apple.com/kz/podcast/syrlasuai/id1760475762"/>
+            <MusicServiceButton service="Apple Podcasts" icon={FaApple} color="bg-black" link="https://podcasts.apple.com/kz/podcast/syrlasuai/id1760737304"/>
             <MusicServiceButton service="Spotify" icon={FaSpotify} color="bg-green-600" link="#" />
           </div>
         </div>
