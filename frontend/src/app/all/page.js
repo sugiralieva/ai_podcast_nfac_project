@@ -16,9 +16,10 @@ export default function PodcastId() {
     const getPodcasts = async () => {
         try {
             const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/podcasts");
-            setPodcasts(response.data);
-            if (response.data.length > 0) {
-                setCurrentPodcast(response.data[0]);
+            const sortedPodcasts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPodcasts(sortedPodcasts);
+            if (sortedPodcasts.length > 0) {
+                setCurrentPodcast(sortedPodcasts[0]);
             }
             setIsFetched(true);
         } catch (error) {

@@ -38,13 +38,13 @@ export default function Component() {
 
   const getPodcasts = async () => {
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/podcasts");
-      setPodcasts(response.data);
-      console.log(podcasts)
+        const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + "/podcasts");
+        const sortedPodcasts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPodcasts(sortedPodcasts);
     } catch (error) {
-      console.error("Error fetching podcasts:", error);
+        console.error("Error fetching podcasts:", error);
     }
-  };
+};
 
 
   useEffect(() => {
@@ -157,8 +157,18 @@ export default function Component() {
                   {podcasts.slice(0, 3).map((podcast) => (
                     <Card key={podcast.episode} className="bg-[#fff] rounded-xl shadow-md">
                         <CardContent className="p-4">
-                          <div className="space-y-2">
+                          <div className="space-y-2 justify-center">
                             <h3 className="text-lg font-bold">{podcast.title}</h3>
+                            <div className="text-muted-foreground text-sm flex items-center justify-center gap-2">
+                              <p>Шыққан күні:</p>
+                              <span>
+                                  {new Date(podcast.createdAt).toLocaleDateString('kk-KZ', {
+                                      year: 'numeric',
+                                      month: 'numeric',
+                                      day: 'numeric'
+                                  })}
+                              </span>
+                          </div>
                             {podcast.url && (
                               <audio
                                 ref={(el) => (audioRefs.current[podcast.episode] = el)}

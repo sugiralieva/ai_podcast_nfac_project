@@ -19,7 +19,7 @@ export const create = async (episode, title, url, description) => {
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await PodcastModel.find()
+        const posts = await PodcastModel.find().sort({ createdAt: -1 })
 
         res.json(posts);
 
