@@ -5,6 +5,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from '@/components/ui/card';
 import AudioPlayer from "@/components/audioplayer/AudioPlayer";
+import { toast } from 'react-hot-toast';
 
 export default function PodcastId() {
     const [podcasts, setPodcasts] = useState([]);
@@ -52,7 +53,14 @@ export default function PodcastId() {
                                         <img src="/project_images/poster.png" width="100" height="100" alt="Episode" className="rounded-lg" />
                                         <div>
                                             <h2 className="text-2xl font-bold">{currentPodcast.title}</h2>
-                                            <p className="text-muted-foreground">{currentPodcast.episode}</p>
+                                            <div className="text-muted-foreground">
+                                                <p>Шыққан күні:</p>
+                                            {new Date(currentPodcast.createdAt).toLocaleDateString('kk-KZ', {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric'
+                                            })}
+                                            </div>
                                         </div>
                                     </div>
                                     <AudioPlayer podcast={currentPodcast} className="mt-4" />
@@ -85,9 +93,14 @@ export default function PodcastId() {
                                             <img src="/project_images/poster.png" width="50" height="50" alt="Episode" className="rounded-lg" />
                                             <div>
                                                 <h4 className="text-base font-bold">{podcast.title}</h4>
-                                                <p className="text-muted-foreground text-sm">
-                                                    {podcast.episode}
-                                                </p>
+                                                <div className="text-muted-foreground text-sm">
+                                                <p>Шыққан күні:</p>
+                                            {new Date(podcast.createdAt).toLocaleDateString('kk-KZ', {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric'
+                                            })}
+                                            </div>
                                             </div>
                                         </div>
                                     ))}

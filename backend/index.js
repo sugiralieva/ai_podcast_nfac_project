@@ -36,7 +36,7 @@ app.listen(PORT, async () => {
     const jsonData = JSON.parse(fs.readFileSync(jsonFilePath, 'utf-8'));
 
     // Итерируемся по каждому элементу и генерируем аудио
-/*     for (const item of jsonData) {
+    /* for (const item of jsonData) {
         const { episode, title, prompt, description_prompt } = item;
         try {
             // Проверяем prompt перед вызовом processAudio

@@ -3,12 +3,13 @@ import "./globals.css";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {Analytics} from "@vercel/analytics/react"
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "SyrlasAI",
-  description: "SyrlasAI",
+  title: "SyrlasuAI",
+  description: "SyrlasuAI",
 };
 
 export default function RootLayout({ children }) {
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} h-full`}>
           {children}
         <Analytics />
+        <Toaster />
       </body>
       </html>
   );
