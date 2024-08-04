@@ -110,7 +110,7 @@ export default function PodcastId() {
                         </>
                     ) : (
                         <div className="bg-white rounded-lg shadow-md p-6 bg-opacity-80">
-                            <h2 className="text-lg font-bold mb-4">Loading...</h2>
+                            <h2 className="text-lg font-bold mb-4">Жүктелуде...</h2>
                         </div>
                     )}
                 </div>
